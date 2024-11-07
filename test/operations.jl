@@ -7,18 +7,18 @@ using Random
 const eltypes = (Float32, Float64, ComplexF32, ComplexF64)
 
 @testset "num_threads" begin
-    num_threads = @inferred tblis_get_num_threads()
+    num_threads = @inferred TBLIS.get_num_threads()
 
-    tblis_set_num_threads(2)
-    @test tblis_get_num_threads() == 2
+    TBLIS.set_num_threads(2)
+    @test TBLIS.get_num_threads() == 2
 
-    tblis_set_num_threads(4)
-    @test tblis_get_num_threads() == 4
+    TBLIS.set_num_threads(4)
+    @test TBLIS.get_num_threads() == 4
 
-    tblis_set_num_threads(num_threads)
+    TBLIS.set_num_threads(num_threads)
 end
 
-@testset "tblis_tensor_add (ndims=$N, eltype=$T)" for T in eltypes, N in 2:5
+@testset "TBLIS.tensor_add (ndims=$N, eltype=$T)" for T in eltypes, N in 2:5
     for _ in 1:5 # repeat tests
         szA = rand(1:4, N)
         perm = randperm(length(szA))
@@ -34,15 +34,15 @@ end
         expected = β * B + α * permutedims(A, perm)
 
         # actual computation stores result in B
-        Atblis = @inferred tblis_tensor(A, α)
-        Btblis = @inferred tblis_tensor(B, β)
-        tblis_tensor_add(Atblis, idxA, Btblis, idxB)
+        Atblis = @inferred TBLIS.tensor(A, α)
+        Btblis = @inferred TBLIS.tensor(B, β)
+        TBLIS.tensor_add(Atblis, idxA, Btblis, idxB)
 
         @test B ≈ expected
     end
 end
 
-@testset "tblis_tensor_mult (eltype=$T)" for T in eltypes
+@testset "TBLIS.tensor_mult (eltype=$T)" for T in eltypes
     for _ in 1:20
         # ndims
         N1 = rand(0:3)
@@ -76,15 +76,15 @@ end
         expected = ndims(C) == 0 ? AB + β * C : permutedims(AB, tuple(pAB...)) + β * C
 
         # actual computation stores result in C
-        Atblis = tblis_tensor(A, α₁)
-        Btblis = tblis_tensor(B, α₂)
-        Ctblis = tblis_tensor(C, β)
+        Atblis = TBLIS.tensor(A, α₁)
+        Btblis = TBLIS.tensor(B, α₂)
+        Ctblis = TBLIS.tensor(C, β)
 
         idx = string(('a' .+ (0:(N1 + N2 + N3 - 1)))...)
         idxA = idx[1:(N1 + N2)][ipA]
         idxB = idx[N1 .+ (1:(N2 + N3))][ipB]
         idxC = idx[vcat(1:N1, (N1 + N2 + 1):end)][pAB]
-        tblis_tensor_mult(Atblis, idxA, Btblis, idxB, Ctblis, idxC)
+        TBLIS.tensor_mult(Atblis, idxA, Btblis, idxB, Ctblis, idxC)
 
         @test C ≈ expected
     end
