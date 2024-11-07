@@ -4,16 +4,16 @@ authors = ["Lukas Devos <ldevos98@gmail.com>"]
 version = "0.3.0"
 
 [deps]
-Aqua = "4c88cf16-eb10-579e-8560-4a9242c79595"
 tblis_jll = "9c7f617c-f299-5d18-afb6-044c7798b3d0"
 
 [extras]
+Aqua = "4c88cf16-eb10-579e-8560-4a9242c79595"
 Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 SafeTestsets = "1bc83da4-3b8d-516f-aca4-4fe02f6d838f"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
-test = ["Test", "SafeTestsets", "Random"]
+test = ["Test", "SafeTestsets", "Random", "Aqua"]
 
 [compat]
 Aqua = "0.8.9"
