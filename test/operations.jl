@@ -7,15 +7,15 @@ using Random
 const eltypes = (Float32, Float64, ComplexF32, ComplexF64)
 
 @testset "num_threads" begin
-    num_threads = @inferred tblis_get_num_threads()
+    num_threads = @inferred TBLIS.get_num_threads()
 
-    tblis_set_num_threads(2)
-    @test tblis_get_num_threads() == 2
+    TBLIS.set_num_threads(2)
+    @test TBLIS.get_num_threads() == 2
 
-    tblis_set_num_threads(4)
-    @test tblis_get_num_threads() == 4
+    TBLIS.set_num_threads(4)
+    @test TBLIS.get_num_threads() == 4
 
-    tblis_set_num_threads(num_threads)
+    TBLIS.set_num_threads(num_threads)
 end
 
 @testset "tblis_tensor_add (ndims=$N, eltype=$T)" for T in eltypes, N in 2:5

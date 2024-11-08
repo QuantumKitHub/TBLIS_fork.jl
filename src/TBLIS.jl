@@ -5,7 +5,6 @@ using tblis_jll
 # Exports
 export tblis_tensor, tblis_scalar
 export tblis_tensor_add, tblis_tensor_mult, tblis_tensor_dot
-export tblis_get_num_threads, tblis_set_num_threads
 
 # Julia bindings for TBLIS
 # ------------------------
@@ -128,16 +127,18 @@ end
 
 # Utility
 # -------
-@doc """
-    tblis_get_num_threads()
+"""
+    get_num_threads()
 
 Get the current number of threads the TBLIS library is using.
-""" tblis_get_num_threads
+"""
+get_num_threads() = convert(Int, tblis_get_num_threads())
 
-@doc """
-    tblis_set_num_threads(n::Int)
+"""
+    set_num_threads(n::Int)
 
 Set the number of threads the TBLIS library should use equal to `n`.
-""" tblis_set_num_threads
+"""
+set_num_threads(n::Integer) = tblis_set_num_threads(convert(Cuint, n))
 
 end
